@@ -300,7 +300,7 @@ const App = () => {
   );
 
   const renderMapView = () => (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col" key="map-view">
       {/* Header */}
       <div className="bg-white border-b p-4 shadow-sm">
         <div className="flex items-center justify-between">
@@ -331,10 +331,15 @@ const App = () => {
         )}
         
         <MapContainer
+          key="moscow-map"
+          ref={mapRef}
           center={moscowCenter}
           zoom={11}
           style={{ height: '100%', width: '100%' }}
           scrollWheelZoom={true}
+          whenCreated={(map) => {
+            mapRef.current = map;
+          }}
         >
           <TileLayer
             attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -373,9 +378,9 @@ const App = () => {
           ))}
           
           {/* Property markers */}
-          {properties.map((property) => (
+          {properties.map((property, index) => (
             <Marker
-              key={property.id}
+              key={`property-${index}`}
               position={[
                 property.location?.coordinates[1] || property.coordinates[1],
                 property.location?.coordinates[0] || property.coordinates[0]
@@ -399,13 +404,13 @@ const App = () => {
                   </div>
                   <Button
                     size="sm"
-                    onClick={() => handleLikeProperty(property.id)}
-                    disabled={likedProperties.has(property.id)}
+                    onClick={() => handleLikeProperty(property.id || property.source_url)}
+                    disabled={likedProperties.has(property.id || property.source_url)}
                     className="w-full mt-3"
-                    variant={likedProperties.has(property.id) ? "secondary" : "default"}
+                    variant={likedProperties.has(property.id || property.source_url) ? "secondary" : "default"}
                   >
-                    <Heart className={`h-4 w-4 mr-1 ${likedProperties.has(property.id) ? 'fill-current' : ''}`} />
-                    {likedProperties.has(property.id) ? 'Понравилось' : 'Нравится'}
+                    <Heart className={`h-4 w-4 mr-1 ${likedProperties.has(property.id || property.source_url) ? 'fill-current' : ''}`} />
+                    {likedProperties.has(property.id || property.source_url) ? 'Понравилось' : 'Нравится'}
                   </Button>
                 </div>
               </Popup>
