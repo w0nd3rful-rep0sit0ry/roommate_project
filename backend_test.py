@@ -131,6 +131,11 @@ class TelegramHousingAPITester:
             if 'id' in prop:
                 self.test_property_id = prop['id']
                 print(f"   Stored property ID for like test: {self.test_property_id}")
+            elif 'source_url' in prop:
+                # Generate a test property ID from source URL
+                import hashlib
+                self.test_property_id = hashlib.md5(prop['source_url'].encode()).hexdigest()[:8]
+                print(f"   Generated property ID for like test: {self.test_property_id}")
                 
         return True
 
