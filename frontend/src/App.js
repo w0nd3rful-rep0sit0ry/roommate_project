@@ -45,6 +45,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [likedProperties, setLikedProperties] = useState(new Set());
   const [telegramUser, setTelegramUser] = useState(null);
+  const mapRef = useRef(null);
 
   // Profile form data
   const [profileForm, setProfileForm] = useState({
