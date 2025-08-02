@@ -76,7 +76,7 @@ class MetroStation(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     name_en: Optional[str] = None
-    location: Dict[str, float]  # {"type": "Point", "coordinates": [lon, lat]}
+    location: Dict[str, Any]  # {"type": "Point", "coordinates": [lon, lat]}
     line: str
     line_color: str
 
